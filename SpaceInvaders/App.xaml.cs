@@ -1,61 +1,42 @@
-using Uno.Resizetizer;
+using Microsoft.UI.Xaml;
 
-namespace SpaceInvaders;
-
-public partial class App : Application
+namespace SpaceInvaders
 {
-    /// <summary>
-    /// Initializes the singleton application object. This is the first line of authored code
-    /// executed, and as such is the logical equivalent of main() or WinMain().
-    /// </summary>
-    public App()
+    public sealed partial class App : Application
     {
-        this.InitializeComponent();
-    }
+        /// <summary>
+        /// Expõe a janela principal da aplicação para que outras partes do código possam acessá-la.
+        /// </summary>
+        public static Window? MainWindow { get; private set; }
 
-    protected Window? MainWindow { get; private set; }
+        public App()
+        {
+            this.InitializeComponent();
+        }
 
-    protected override void OnLaunched(LaunchActivatedEventArgs args)
-    {
-        MainWindow = new Window();
+        /// <summary>
+        /// Chamado quando a aplicação é iniciada.
+        /// </summary>
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        {
 #if DEBUG
-        MainWindow.UseStudio();
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                // System.Diagnostics.Debugger.Break();
+            }
 #endif
+            // Cria a janela principal, que servirá de contêiner para o jogo.
+            MainWindow = new Window();
 
-
-        // Do not repeat app initialization when the Window already has content,
-        // just ensure that the window is active
-        if (MainWindow.Content is not Frame rootFrame)
-        {
-            // Create a Frame to act as the navigation context and navigate to the first page
-            rootFrame = new Frame();
-
-            // Place the frame in the current Window
-            MainWindow.Content = rootFrame;
-
-            rootFrame.NavigationFailed += OnNavigationFailed;
-        }
-
-        if (rootFrame.Content == null)
-        {
-            // When the navigation stack isn't restored navigate to the first page,
-            // configuring the new page by passing required information as a navigation
-            // parameter
+            // Cria o "quadro" inicial onde a página do jogo será carregada.
+            var rootFrame = new Frame();
             rootFrame.Navigate(typeof(MainPage), args.Arguments);
+
+            // Define o quadro como o conteúdo da janela.
+            MainWindow.Content = rootFrame;
+            
+            // Mostra a janela na tela.
+            MainWindow.Activate();
         }
-
-        MainWindow.SetWindowIcon();
-        // Ensure the current window is active
-        MainWindow.Activate();
-    }
-
-    /// <summary>
-    /// Invoked when Navigation to a certain page fails
-    /// </summary>
-    /// <param name="sender">The Frame which failed navigation</param>
-    /// <param name="e">Details about the navigation failure</param>
-    void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
-    {
-        throw new InvalidOperationException($"Failed to load {e.SourcePageType.FullName}: {e.Exception}");
     }
 }

@@ -10,31 +10,47 @@
     <Grid>
         <StackPanel x:Name="StartScreen" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="20">
             <TextBlock Text="SPACE INVADERS" FontSize="48" FontWeight="Bold" HorizontalAlignment="Center"/>
-            <Button Content="Iniciar Jogo" HorizontalAlignment="Center" Click="StartGame_Click"/>
+            <TextBlock Text="= TABELA DE PONTOS =" FontSize="20" HorizontalAlignment="Center" Foreground="LawnGreen" Margin="0,20,0,0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
+                <Image Source="ms-appx:///Assets/Images/alien4.png" Width="30" Height="30"/>
+                <TextBlock Text="= ??? PONTOS" VerticalAlignment="Center" FontSize="16"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
+                <Image Source="ms-appx:///Assets/Images/alien3.png" Width="30" Height="30"/>
+                <TextBlock Text="= 40 PONTOS" VerticalAlignment="Center" FontSize="16"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
+                <Image Source="ms-appx:///Assets/Images/alien2.png" Width="30" Height="30"/>
+                <TextBlock Text="= 20 PONTOS" VerticalAlignment="Center" FontSize="16"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
+                <Image Source="ms-appx:///Assets/Images/alien1.png" Width="30" Height="30"/>
+                <TextBlock Text="= 10 PONTOS" VerticalAlignment="Center" FontSize="16"/>
+            </StackPanel>
+            <Button Content="Iniciar Jogo" HorizontalAlignment="Center" Click="StartGame_Click" FontSize="24" Padding="20,10" Margin="0,20,0,0"/>
+            <TextBlock Text="Use as setas (← →) ou A/D para mover e Espaço para atirar." FontSize="14" HorizontalAlignment="Center" Margin="0,20,0,0"/>
         </StackPanel>
 
         <Grid x:Name="InGameUI" Visibility="Collapsed" IsTabStop="True">
 
             <Canvas x:Name="GameCanvas" Width="800" Height="600" Background="Black" HorizontalAlignment="Center" VerticalAlignment="Center">
-
                 <Image x:Name="PlayerImage" Width="50" Height="40" Canvas.Left="375" Canvas.Top="550" Source="ms-appx:///Assets/Images/lasercannon.png"/>
-
-                <StackPanel Canvas.ZIndex="1" Orientation="Horizontal" Canvas.Left="20" Canvas.Top="10">
-                    <TextBlock Text="PONTUAÇÃO: " Foreground="White" FontSize="20"/>
-                    <TextBlock x:Name="ScoreText" Text="0" Foreground="LawnGreen" FontSize="20"/>
-                </StackPanel>
-
-                <StackPanel Canvas.ZIndex="1" Orientation="Horizontal" Canvas.Left="550" Canvas.Top="10">
-                    <TextBlock Text="VIDAS: " Foreground="White" VerticalAlignment="Center" FontSize="20"/>
-                    <Image x:Name="Life1" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0"/>
-                    <Image x:Name="Life2" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0"/>
-                    <Image x:Name="Life3" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0"/>
-                    <Image x:Name="Life4" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="Collapsed"/>
-                    <Image x:Name="Life5" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="Collapsed"/>
-                    <Image x:Name="Life6" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="Collapsed"/>
-                </StackPanel>
-
             </Canvas>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,10,0,0">
+                <TextBlock Text="PONTUAÇÃO: " Foreground="White" FontSize="20"/>
+                <TextBlock x:Name="ScoreText" Text="0" Foreground="LawnGreen" FontSize="20"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,20,0">
+                <TextBlock Text="VIDAS: " Foreground="White" VerticalAlignment="Center" FontSize="20"/>
+                <Image x:Name="Life1" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0"/>
+                <Image x:Name="Life2" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0"/>
+                <Image x:Name="Life3" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0"/>
+                <Image x:Name="Life4" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="Collapsed"/>
+                <Image x:Name="Life5" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="Collapsed"/>
+                <Image x:Name="Life6" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="Collapsed"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>

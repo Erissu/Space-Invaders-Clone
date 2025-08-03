@@ -12,43 +12,31 @@ using Windows.UI;
 
 namespace SpaceInvaders.Services
 {
-    /// <summary>
-    /// Esta classe é o cérebro do jogo.
-    /// Ela gerencia o loop principal, os objetos do jogo, as colisões e o estado geral.
-    /// </summary>
     public class GameManager
     {
-        // Referências para os elementos da interface que vamos manipular
         private readonly Canvas _gameCanvas;
         private readonly TextBlock _scoreText;
         private readonly Image[] _lifeImages;
         private readonly Image _playerImage;
-
-        // Gerenciador de inimigos
         private readonly EnemyManager _enemyManager;
-
-        // Objetos do jogo
-        private Player _player = null;
+        // O '?' aqui resolve um aviso de compilação (CS8625)
+        private Player? _player;
         private readonly List<Rectangle> _playerBullets = new();
         private readonly List<Rectangle> _enemyBullets = new();
         private readonly List<Rectangle> _barrierBlocks = new();
-
-        // Controle do Jogo
         private readonly DispatcherTimer _gameTimer = new();
         private readonly Random _random = new();
 
         private int _score;
         private int _nextExtraLifeScore;
 
-        // Constantes para configurar o jogo
-        private const int WinScore = 2000;
+        private const int WinScore = 500;
         private const int InitialPlayerLives = 3;
         private const int MaxPlayerLives = 6;
         private const double PlayerSpeed = 8;
         private const double PlayerBulletSpeed = -15;
         private const double EnemyBulletSpeed = 5;
 
-        // Controle de input
         private bool _isLeftPressed;
         private bool _isRightPressed;
 
@@ -59,11 +47,9 @@ namespace SpaceInvaders.Services
             _playerImage = playerImage;
             _lifeImages = new[] { life1, life2, life3, life4, life5, life6 };
 
-            // Define o intervalo do timer do jogo. Isso é tipo o "framerate".
             _gameTimer.Interval = TimeSpan.FromMilliseconds(20);
             _gameTimer.Tick += GameLoop;
             
-            // Dicionário com os tipos de inimigos
             var enemyTypes = new Dictionary<string, EnemyType> {
                 {"alien1", new EnemyType { ImageSource = "ms-appx:///Assets/Images/alien1.png", Points = 10 }},
                 {"alien2", new EnemyType { ImageSource = "ms-appx:///Assets/Images/alien2.png", Points = 20 }},
@@ -74,42 +60,29 @@ namespace SpaceInvaders.Services
             _enemyManager = new EnemyManager(_gameCanvas, enemyTypes);
         }
 
-        // Inicia um novo jogo
         public void StartGame()
         {
             SetupNewGame();
             _gameTimer.Start();
         }
 
-        // Configura o estado inicial do jogo
         private void SetupNewGame()
         {
-            // Limpa TUDO que foi adicionado dinamicamente antes.
             _gameCanvas.Children.Clear();
-    
-            // Limpa as listas de controle do jogo
             _playerBullets.Clear();
             _enemyBullets.Clear();
             _barrierBlocks.Clear();
-    
-            // Cria o objeto do jogador, passando a imagem que veio da MainPage
-            _player = new Player(_playerImage, InitialPlayerLives);
 
-            // CORREÇÃO: Adicionamos a imagem do jogador de volta ao Canvas.
-            // Isso garante que, mesmo depois de limpar, ele esteja sempre lá.
+            _player = new Player(_playerImage, InitialPlayerLives);
             _gameCanvas.Children.Add(_player.Visual);
-    
-            // Reposiciona o jogador no centro
             _player.X = (_gameCanvas.Width / 2) - (_player.Width / 2);
             _player.Y = 550;
     
-            // Reinicia a pontuação e as vidas
             _score = 0;
             _scoreText.Text = "0";
             _nextExtraLifeScore = 1000;
             UpdateLivesDisplay();
 
-            // Recria barreiras e inimigos
             CreatePixelatedBarrier(80, 450);
             CreatePixelatedBarrier(260, 450);
             CreatePixelatedBarrier(440, 450);
@@ -117,10 +90,13 @@ namespace SpaceInvaders.Services
 
             _enemyManager.SpawnWave();
         }
-
-        // Loop principal do jogo, acontece a cada "tick" do timer
-        private void GameLoop(object sender, object e)
+        
+        // O '?' nos parâmetros resolve um aviso de compilação (CS8622)
+        private void GameLoop(object? sender, object e)
         {
+            // Se o jogador for nulo por algum motivo, não faz nada.
+            if (_player is null) return;
+            
             UpdatePlayerPosition();
             _player.Update();
             _enemyManager.Update(_gameCanvas.Width, _barrierBlocks);
@@ -129,7 +105,7 @@ namespace SpaceInvaders.Services
             HandleEnemyShooting();
             CheckCollisions();
 
-            if (_enemyManager.IsSwarmDestroyed && _score < WinScore)
+            if (_enemyManager.IsSwarmDestroyed)
             {
                 _enemyManager.SpawnWave();
             }
@@ -137,6 +113,9 @@ namespace SpaceInvaders.Services
         
         private void UpdatePlayerPosition()
         {
+            // Verifica se _player não é nulo antes de usar
+            if (_player is null) return;
+
             if (_isLeftPressed)
             {
                 _player.Move(-PlayerSpeed, _gameCanvas.Width);
@@ -147,7 +126,6 @@ namespace SpaceInvaders.Services
             }
         }
 
-        // Métodos para lidar com o input
         public void OnKeyDown(VirtualKey key)
         {
             if (!_gameTimer.IsEnabled) return;
@@ -168,8 +146,7 @@ namespace SpaceInvaders.Services
                 case VirtualKey.Right or VirtualKey.D: _isRightPressed = false; break;
             }
         }
-
-        // Lógica de tiro dos inimigos
+        
         private void HandleEnemyShooting()
         {
             if (_random.Next(100) < 2)
@@ -182,10 +159,10 @@ namespace SpaceInvaders.Services
             }
         }
 
-        // Checagem de colisões
         private void CheckCollisions()
         {
-            // Tiro do jogador vs Inimigos
+            if (_player is null) return;
+
             foreach (var bullet in _playerBullets.ToList())
             {
                 foreach (var enemy in _enemyManager.Enemies.ToList())
@@ -194,6 +171,13 @@ namespace SpaceInvaders.Services
                     {
                         _score += enemy.Points;
                         _scoreText.Text = _score.ToString();
+                        
+                        if (_score >= WinScore)
+                        {
+                            EndGame(true);
+                            return;
+                        }
+
                         CheckForExtraLife();
                         
                         _enemyManager.RemoveEnemy(enemy);
@@ -206,7 +190,6 @@ namespace SpaceInvaders.Services
                 nextPlayerBullet:;
             }
 
-            // Tiros inimigos vs Jogador
             foreach (var bullet in _enemyBullets.ToList())
             {
                 if (CheckCollision(bullet, _player.Visual))
@@ -225,7 +208,6 @@ namespace SpaceInvaders.Services
                 }
             }
 
-            // Tiros vs Barreiras
             var allBullets = _playerBullets.Concat(_enemyBullets).ToList();
             foreach (var bullet in allBullets)
             {
@@ -245,7 +227,6 @@ namespace SpaceInvaders.Services
             }
         }
         
-        // Mover os projéteis
         private void MoveBullets()
         {
             foreach (var bullet in _playerBullets.ToList())
@@ -267,11 +248,10 @@ namespace SpaceInvaders.Services
                 }
             }
         }
-
-        // Lógicas de tiro
+        
         private void FirePlayerBullet()
         {
-            if (_player.IsStunned || _playerBullets.Count >= 1) return;
+            if (_player is null || _player.IsStunned || _playerBullets.Count >= 1) return;
             
             var bullet = new Rectangle { Width = 5, Height = 15, Fill = new SolidColorBrush(Colors.LawnGreen) };
             Canvas.SetLeft(bullet, _player.X + _player.Width / 2 - 2.5);
@@ -289,10 +269,9 @@ namespace SpaceInvaders.Services
             _gameCanvas.Children.Add(bullet);
         }
         
-        // Lógicas de vida e pontuação
         private void CheckForExtraLife()
         {
-            if (_score >= _nextExtraLifeScore)
+            if (_player != null && _score >= _nextExtraLifeScore)
             {
                 _player.AddLife(MaxPlayerLives);
                 UpdateLivesDisplay();
@@ -302,13 +281,14 @@ namespace SpaceInvaders.Services
 
         private void UpdateLivesDisplay()
         {
+            if (_player is null) return;
+            
             for (int i = 0; i < _lifeImages.Length; i++)
             {
                 _lifeImages[i].Visibility = _player.Lives > i ? Visibility.Visible : Visibility.Collapsed;
             }
         }
-
-        // Função de colisão genérica
+        
         private bool CheckCollision(FrameworkElement elementA, FrameworkElement elementB)
         {
             if (elementA is null || elementB is null) return false;
@@ -319,7 +299,6 @@ namespace SpaceInvaders.Services
             return ax < bx + elementB.Width && ax + elementA.Width > bx && ay < by + elementB.Height && ay + elementA.Height > by;
         }
         
-        // Criação de barreiras
         private void CreatePixelatedBarrier(double startX, double startY)
         {
             int blockSize = 5;
@@ -339,7 +318,6 @@ namespace SpaceInvaders.Services
             }
         }
         
-        // Fim de Jogo
         private async void EndGame(bool playerWon)
         {
             _gameTimer.Stop();
@@ -350,7 +328,9 @@ namespace SpaceInvaders.Services
                 XamlRoot = _gameCanvas.XamlRoot
             };
             await dialog.ShowAsync();
-            // TODO: Voltar para a tela inicial
+            
+            SetupNewGame();
+            _gameTimer.Start();
         }
     }
 }

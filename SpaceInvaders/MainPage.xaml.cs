@@ -13,29 +13,41 @@ namespace SpaceInvaders
         public MainPage()
         {
             this.InitializeComponent();
-            this.Loaded += OnPageLoaded;
         }
 
-        private void OnPageLoaded(object sender, RoutedEventArgs e)
-        {
-            _gameManager = new GameManager(GameCanvas, ScoreText, Life1, Life2, Life3, Life4, Life5, Life6, PlayerImage);
-        }
-        
         private void StartGame_Click(object sender, RoutedEventArgs e)
         {
+            // Esconde o menu e mostra a tela do jogo
             StartScreen.Visibility = Visibility.Collapsed;
             InGameUI.Visibility = Visibility.Visible;
             
-            _gameManager?.StartGame();
+            // Se o jogo nunca foi criado, cria uma nova instância
+            if (_gameManager == null)
+            {
+                _gameManager = new GameManager(GameCanvas, ScoreText, Life1, Life2, Life3, Life4, Life5, Life6, PlayerImage);
+                
+                // Anexa os eventos de teclado APENAS UMA VEZ
+                InGameUI.KeyDown += GameUI_KeyDown;
+                InGameUI.KeyUp += GameUI_KeyUp;
+            }
             
-            // --- CORREÇÃO FINAL E MAIS IMPORTANTE ---
-            // 1. Damos o foco diretamente para a área do jogo (o Grid InGameUI).
+            // Inicia o jogo (ou reinicia, se já existia)
+            _gameManager.StartGame();
+            
+            // Garante que a tela do jogo possa receber os comandos do teclado
             InGameUI.Focus(FocusState.Programmatic);
+        }
 
-            // 2. Anexamos os eventos de teclado diretamente a essa área do jogo.
-            // Agora, quando o InGameUI estiver focado, ele VAI ouvir as teclas.
-            InGameUI.KeyDown += (s, args) => _gameManager?.OnKeyDown(args.Key);
-            InGameUI.KeyUp += (s, args) => _gameManager?.OnKeyUp(args.Key);
+        // Envia o comando de tecla pressionada para o GameManager
+        private void GameUI_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            _gameManager?.OnKeyDown(e.Key);
+        }
+
+        // Envia o comando de tecla solta para o GameManager
+        private void GameUI_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            _gameManager?.OnKeyUp(e.Key);
         }
     }
 }
