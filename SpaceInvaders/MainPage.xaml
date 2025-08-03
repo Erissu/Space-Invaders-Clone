@@ -1,0 +1,40 @@
+<Page
+    x:Class="SpaceInvaders.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel x:Name="StartScreen" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="20">
+            <TextBlock Text="SPACE INVADERS" FontSize="48" FontWeight="Bold" HorizontalAlignment="Center"/>
+            <Button Content="Iniciar Jogo" HorizontalAlignment="Center" Click="StartGame_Click"/>
+        </StackPanel>
+
+        <Grid x:Name="InGameUI" Visibility="Collapsed" IsTabStop="True">
+
+            <Canvas x:Name="GameCanvas" Width="800" Height="600" Background="Black" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                <Image x:Name="PlayerImage" Width="50" Height="40" Canvas.Left="375" Canvas.Top="550" Source="ms-appx:///Assets/Images/lasercannon.png"/>
+
+                <StackPanel Canvas.ZIndex="1" Orientation="Horizontal" Canvas.Left="20" Canvas.Top="10">
+                    <TextBlock Text="PONTUAÇÃO: " Foreground="White" FontSize="20"/>
+                    <TextBlock x:Name="ScoreText" Text="0" Foreground="LawnGreen" FontSize="20"/>
+                </StackPanel>
+
+                <StackPanel Canvas.ZIndex="1" Orientation="Horizontal" Canvas.Left="550" Canvas.Top="10">
+                    <TextBlock Text="VIDAS: " Foreground="White" VerticalAlignment="Center" FontSize="20"/>
+                    <Image x:Name="Life1" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0"/>
+                    <Image x:Name="Life2" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0"/>
+                    <Image x:Name="Life3" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0"/>
+                    <Image x:Name="Life4" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="Collapsed"/>
+                    <Image x:Name="Life5" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="Collapsed"/>
+                    <Image x:Name="Life6" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="Collapsed"/>
+                </StackPanel>
+
+            </Canvas>
+        </Grid>
+    </Grid>
+</Page>
