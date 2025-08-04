@@ -718,3 +718,12 @@ C:\Users\eriss\RiderProjects\spaceInvaders1\spaceInvaders\obj\Debug\net9.0-deskt
 C:\Users\eriss\RiderProjects\spaceInvaders1\spaceInvaders\obj\Debug\net9.0-desktop\spaceInvaders.pdb
 C:\Users\eriss\RiderProjects\spaceInvaders1\spaceInvaders\obj\Debug\net9.0-desktop\spaceInvaders.genruntimeconfig.cache
 C:\Users\eriss\RiderProjects\spaceInvaders1\spaceInvaders\obj\Debug\net9.0-desktop\ref\spaceInvaders.dll
+C:\Users\eriss\RiderProjects\spaceInvaders1\spaceInvaders\obj\Debug\net9.0-desktop\spaceInvaders.sourcelink.json
+C:\Users\eriss\RiderProjects\spaceInvaders1\spaceInvaders\bin\Debug\net9.0-desktop\Sounds\invaderkilled.wav
+C:\Users\eriss\RiderProjects\spaceInvaders1\spaceInvaders\bin\Debug\net9.0-desktop\Sounds\shoot.wav
+C:\Users\eriss\RiderProjects\spaceInvaders1\spaceInvaders\bin\Debug\net9.0-desktop\NAudio.dll
+C:\Users\eriss\RiderProjects\spaceInvaders1\spaceInvaders\bin\Debug\net9.0-desktop\NAudio.Asio.dll
+C:\Users\eriss\RiderProjects\spaceInvaders1\spaceInvaders\bin\Debug\net9.0-desktop\NAudio.Core.dll
+C:\Users\eriss\RiderProjects\spaceInvaders1\spaceInvaders\bin\Debug\net9.0-desktop\NAudio.Midi.dll
+C:\Users\eriss\RiderProjects\spaceInvaders1\spaceInvaders\bin\Debug\net9.0-desktop\NAudio.Wasapi.dll
+C:\Users\eriss\RiderProjects\spaceInvaders1\spaceInvaders\bin\Debug\net9.0-desktop\NAudio.WinMM.dll

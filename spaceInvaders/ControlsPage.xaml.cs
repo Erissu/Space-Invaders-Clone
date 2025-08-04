@@ -1,0 +1,21 @@
+﻿// spaceInvaders/ControlsPage.xaml.cs
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+
+namespace spaceInvaders;
+
+public sealed partial class ControlsPage : Page
+{
+    public ControlsPage()
+    {
+        this.InitializeComponent();
+    }
+
+    private void BackButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (this.Frame.CanGoBack)
+        {
+            this.Frame.GoBack();
+        }
+    }
+}

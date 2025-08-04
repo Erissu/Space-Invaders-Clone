@@ -37,7 +37,7 @@ public partial class App : Application
         }
 
         // Navega diretamente para a página do jogo.
-        frame.Navigate(typeof(MainPage), args.Arguments);
+        frame.Navigate(typeof(HomePage), args.Arguments);
 
         MainWindow.Activate();
     }
