@@ -37,5 +37,18 @@
             SkiaRenderer;
         </UnoFeatures>
     </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="NAudio" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="Sounds\invaderkilled.wav" />
+      <Content Include="Sounds\invaderkilled.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Sounds\shoot.wav" />
+      <Content Include="Sounds\shoot.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
 
 </Project>
