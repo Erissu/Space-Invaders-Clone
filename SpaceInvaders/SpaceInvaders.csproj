@@ -1,5 +1,6 @@
 <Project Sdk="Uno.Sdk">
     <PropertyGroup>
+
         <TargetFrameworks>net9.0-desktop</TargetFrameworks>
 
         <OutputType>Exe</OutputType>
@@ -26,5 +27,15 @@
             SkiaRenderer;
         </UnoFeatures>
     </PropertyGroup>
-
+    <ItemGroup>
+        <Content Include="Assets\Sounds\shoot.mp3">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Assets\Sounds\hit.mp3">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Assets\Sounds\barrier.mp3">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
 </Project>

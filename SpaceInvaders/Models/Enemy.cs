@@ -4,35 +4,27 @@ using System;
 
 namespace SpaceInvaders.Models
 {
-    /// <summary>
-    /// Representa um único inimigo (alien) na tela.
-    /// Ele "herda" da classe GameObject, então já tem posição (X, Y), largura, altura, etc.
-    /// </summary>
     public class Enemy : GameObject
     {
-        // Guarda os pontos que este inimigo específico vale.
         public int Points { get; }
+        private readonly double _initialX;
+        private readonly double _initialY;
 
-        /// <summary>
-        /// Construtor do Inimigo.
-        /// </summary>
-        /// <param name="type">O tipo de inimigo (que contém a imagem e os pontos).</param>
-        /// <param name="initialX">Posição X inicial.</param>
-        /// <param name="initialY">Posição Y inicial.</param>
+        // O construtor agora chama o construtor base corrigido.
         public Enemy(EnemyType type, double initialX, double initialY) 
-            // Aqui chamamos o construtor da classe "pai" (GameObject),
-            // criando uma nova imagem para este inimigo.
-            : base(new Image
-            {
-                Source = new BitmapImage(new Uri(type.ImageSource)),
-                Width = 40,
-                Height = 40
-            })
+            : base(new Image { Source = new BitmapImage(new Uri(type.ImageSource)) }, 40, 30)
         {
-            // Definimos a posição inicial e os pontos.
-            X = initialX;
-            Y = initialY;
             Points = type.Points;
+            _initialX = initialX;
+            _initialY = initialY;
+            X = _initialX;
+            Y = _initialY;
+        }
+
+        public void UpdatePosition(double swarmOffsetX, double swarmOffsetY)
+        {
+            X = _initialX + swarmOffsetX;
+            Y = _initialY + swarmOffsetY;
         }
     }
 }

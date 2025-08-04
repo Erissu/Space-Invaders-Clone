@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Shapes;
 using SpaceInvaders.Models;
 using System;
@@ -9,19 +10,23 @@ namespace SpaceInvaders.Services
 {
     public class EnemyManager
     {
-        // ... (o resto do código aqui não muda) ...
         private readonly Canvas _gameCanvas;
         private readonly Dictionary<string, EnemyType> _enemyTypes;
+        private readonly List<Enemy> _enemies = new();
+        private readonly Random _random = new();
+
+        private double _swarmX;
+        private double _swarmY;
+        private double _swarmSpeed = 5;
+        private bool _movingRight = true;
         
-        public List<Enemy> Enemies { get; private set; } = new();
+        private const double SwarmMoveDownStep = 20;
+        private double _moveTimer;
+        private double _moveInterval = 1.0;
 
-        private double _enemyDirection = 1;
-        private double _enemySpeed = 1;
-        private int _ticksSinceLastMove = 0;
-        private int _moveThreshold = 30;
-
-        public bool IsSwarmDestroyed => !Enemies.Any();
-
+        public List<Enemy> Enemies => _enemies;
+        public bool IsSwarmDestroyed => !_enemies.Any();
+        
         public EnemyManager(Canvas gameCanvas, Dictionary<string, EnemyType> enemyTypes)
         {
             _gameCanvas = gameCanvas;
@@ -31,89 +36,73 @@ namespace SpaceInvaders.Services
         public void SpawnWave()
         {
             Enemies.Clear();
-
-            double startX = 50;
-            double startY = 50;
-            int enemySpacing = 50; 
-
-            string[] rowTypes = { "alien3", "alien3", "alien2", "alien2", "alien1", "alien1" };
-
-            for (int row = 0; row < rowTypes.Length; row++)
+            _moveInterval = 1.0; 
+            _moveTimer = _moveInterval;
+            
+            string[] alienRows = { "alien3", "alien2", "alien2", "alien1", "alien1" };
+            for (int row = 0; row < alienRows.Length; row++)
             {
                 for (int col = 0; col < 11; col++)
                 {
-                    var enemyType = _enemyTypes[rowTypes[row]];
-                    var enemy = new Enemy(enemyType, startX + col * enemySpacing, startY + row * enemySpacing);
+                    var enemyTypeKey = alienRows[row];
+                    double initialX = col * 55 + 30;
+                    double initialY = row * 45 + 50;
+                    var enemy = new Enemy(_enemyTypes[enemyTypeKey], initialX, initialY);
+                    
                     Enemies.Add(enemy);
                     _gameCanvas.Children.Add(enemy.Visual);
                 }
             }
+            _swarmX = 0;
+            _swarmY = 0;
         }
 
-        /// <summary>
-        /// Remove um inimigo do jogo (quando ele é atingido).
-        /// </summary>
-        public void RemoveEnemy(Enemy enemy)
+        // A assinatura do método está correta e espera as barreiras.
+        public void Update(double canvasWidth, List<Rectangle> barriers)
         {
-            // CORREÇÃO: Usando o método Kill() para ser consistente.
-            enemy.Kill(); 
-            _gameCanvas.Children.Remove(enemy.Visual);
-            Enemies.Remove(enemy);
-    
-            if (_moveThreshold > 5)
+            _moveTimer -= 0.02; 
+            if (_moveTimer <= 0)
             {
-                _moveThreshold -= 1;
-            }
-        }
-        
-        // ... (o resto do arquivo EnemyManager.cs continua igual) ...
-        public void Update(double gameWidth, List<Rectangle> barriers)
-        {
-            _ticksSinceLastMove++;
-            if (_ticksSinceLastMove < _moveThreshold)
-            {
-                return;
-            }
-            _ticksSinceLastMove = 0;
+                bool wallHit = false;
+                double nextSwarmX = _swarmX + (_movingRight ? _swarmSpeed : -_swarmSpeed);
 
-            bool changeDirection = false;
-            foreach (var enemy in Enemies)
-            {
-                if ((_enemyDirection > 0 && enemy.X + enemy.Width > gameWidth) || (_enemyDirection < 0 && enemy.X < 0))
-                {
-                    changeDirection = true;
-                    break;
-                }
-            }
-
-            if (changeDirection)
-            {
-                _enemyDirection *= -1;
                 foreach (var enemy in Enemies)
                 {
-                    enemy.Y += 20;
+                    double futureX = enemy.X - _swarmX + nextSwarmX;
+                    if (futureX < 0 || futureX + enemy.Width > canvasWidth)
+                    {
+                        wallHit = true;
+                        break;
+                    }
                 }
-            }
-            else
-            {
+
+                if (wallHit)
+                {
+                    _movingRight = !_movingRight;
+                    _swarmY += SwarmMoveDownStep;
+                }
+                else
+                {
+                    _swarmX = nextSwarmX;
+                }
+                
                 foreach (var enemy in Enemies)
                 {
-                    enemy.X += _enemySpeed * _enemyDirection;
+                    enemy.UpdatePosition(_swarmX, _swarmY);
                 }
+                
+                double remainingRatio = (double)Enemies.Count / 55.0;
+                _moveInterval = remainingRatio;
+                if (_moveInterval < 0.1) _moveInterval = 0.1;
+                _moveTimer = _moveInterval;
             }
             
-            foreach (var enemy in Enemies)
+            // Lógica de colisão dos inimigos com as barreiras
+            foreach (var enemy in Enemies.ToList())
             {
-                enemy.Update();
-
                 foreach (var block in barriers.ToList())
                 {
-                    double ax = Canvas.GetLeft(enemy.Visual);
-                    double ay = Canvas.GetTop(enemy.Visual);
-                    double bx = Canvas.GetLeft(block);
-                    double by = Canvas.GetTop(block);
-
-                    if (ax < bx + block.Width && ax + enemy.Width > bx && ay < by + block.Height && ay + enemy.Height > by)
+                    if (CheckCollision(enemy.Visual, block))
                     {
                         _gameCanvas.Children.Remove(block);
                         barriers.Remove(block);
@@ -121,21 +110,27 @@ namespace SpaceInvaders.Services
                 }
             }
         }
-        
+
+        public void RemoveEnemy(Enemy enemy)
+        {
+            _gameCanvas.Children.Remove(enemy.Visual);
+            Enemies.Remove(enemy);
+        }
+
         public Enemy? GetRandomShooter()
         {
             if (!Enemies.Any()) return null;
-
-            var random = new Random();
-            
-            var columns = Enemies.GroupBy(e => e.X);
-            
-            var nonEmptyColumns = columns.Where(c => c.Any()).ToList();
-            if (!nonEmptyColumns.Any()) return null;
-
-            var randomColumn = nonEmptyColumns[random.Next(nonEmptyColumns.Count)];
-            
-            return randomColumn.OrderByDescending(e => e.Y).FirstOrDefault();
+            return Enemies[_random.Next(Enemies.Count)];
+        }
+        
+        private bool CheckCollision(FrameworkElement elementA, FrameworkElement elementB)
+        {
+            if (elementA is null || elementB is null) return false;
+            double ax = Canvas.GetLeft(elementA);
+            double ay = Canvas.GetTop(elementA);
+            double bx = Canvas.GetLeft(elementB);
+            double by = Canvas.GetTop(elementB);
+            return ax < bx + elementB.Width && ax + elementA.Width > bx && ay < by + elementB.Height && ay + elementA.Height > by;
         }
     }
 }

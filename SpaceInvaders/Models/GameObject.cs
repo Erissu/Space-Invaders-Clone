@@ -3,9 +3,14 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace SpaceInvaders.Models
 {
+    /// <summary>
+    /// A classe base para todos os objetos visuais do jogo (Jogador, Inimigos).
+    /// </summary>
     public abstract class GameObject
     {
-        public FrameworkElement Visual { get; protected set; }
+        public FrameworkElement Visual { get; }
+        public double Width { get; }
+        public double Height { get; }
 
         public double X
         {
@@ -19,23 +24,14 @@ namespace SpaceInvaders.Models
             set => Canvas.SetTop(Visual, value);
         }
 
-        public double Width => Visual.Width;
-        public double Height => Visual.Height;
-
-        // A propriedade agora tem um "private set" para proteger a lógica.
-        public bool IsAlive { get; private set; } = true;
-
-        protected GameObject(FrameworkElement visual)
+        // CORRIGIDO: O construtor agora aceita o elemento visual e suas dimensões.
+        protected GameObject(FrameworkElement visual, double width, double height)
         {
             Visual = visual;
-        }
-
-        public virtual void Update() { }
-
-        // Método público para que outras classes possam "matar" este objeto.
-        public void Kill()
-        {
-            IsAlive = false;
+            Width = width;
+            Height = height;
+            Visual.Width = width;
+            Visual.Height = height;
         }
     }
 }
