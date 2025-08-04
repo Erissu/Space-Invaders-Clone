@@ -38,4 +38,7 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="NAudio" />
+    </ItemGroup>
 </Project>

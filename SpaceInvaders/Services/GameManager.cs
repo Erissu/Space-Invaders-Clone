@@ -50,7 +50,7 @@ namespace SpaceInvaders.Services
             _gameTimer.Interval = TimeSpan.FromMilliseconds(20);
             _gameTimer.Tick += GameLoop;
             
-            _soundManager = new SoundManager(gameCanvas.DispatcherQueue);
+            _soundManager = new SoundManager();
 
             var enemyTypes = new Dictionary<string, EnemyType> {
                 {"alien1", new EnemyType { ImageSource = "ms-appx:///Assets/Images/alien1.png", Points = 10 }},

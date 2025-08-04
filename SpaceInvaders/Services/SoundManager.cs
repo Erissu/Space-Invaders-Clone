@@ -1,84 +1,74 @@
-﻿using Windows.Media.Core;
-using Windows.Media.Playback;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO; // Importante para usar Path.Combine
-using Microsoft.UI.Dispatching;
+using System.IO;
+using NAudio.Wave; // A utilizar a nova biblioteca
 
 namespace SpaceInvaders.Services
 {
     public class SoundManager
     {
-        private readonly Dictionary<string, MediaSource> _soundSources = new();
-        private readonly List<MediaPlayer> _activePlayers = new();
-        private readonly DispatcherQueue _dispatcherQueue;
+        // Lista para manter uma referência aos players ativos, evitando que o som seja cortado pelo Garbage Collector
+        private readonly List<IDisposable> _activeSoundPlayers = new();
 
-        public SoundManager(DispatcherQueue dispatcherQueue)
+        public SoundManager()
         {
-            _dispatcherQueue = dispatcherQueue;
-            Debug.WriteLine("[SoundManager v4] Iniciando...");
-            LoadSound("shoot", "shoot.mp3");
-            LoadSound("invaderkilled", "hit.mp3");
-            LoadSound("explosion", "hit.mp3");
-            LoadSound("barrier", "barrier.mp3");
-            Debug.WriteLine("[SoundManager v4] Carga de fontes de som finalizada.");
-        }
-
-        private void LoadSound(string key, string fileName)
-        {
-            try
-            {
-                // CORRIGIDO: Monta o caminho completo para o arquivo na pasta de compilação
-                string fullPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Sounds", fileName);
-                
-                // Verifica se o arquivo realmente existe antes de tentar carregar
-                if (File.Exists(fullPath))
-                {
-                    var source = MediaSource.CreateFromUri(new Uri(fullPath));
-                    _soundSources[key] = source;
-                    Debug.WriteLine($"[SoundManager v4] SUCESSO ao carregar fonte de som: '{key}' de '{fullPath}'");
-                }
-                else
-                {
-                    Debug.WriteLine($"[SoundManager v4] ERRO FATAL: Arquivo de som NÃO ENCONTRADO em: '{fullPath}'");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"[SoundManager v4] ERRO ao carregar fonte de som: '{key}'. Mensagem: {ex.Message}");
-            }
+            // O construtor agora está limpo, o carregamento é feito no momento de tocar
         }
 
         public void Play(string key)
         {
-            if (_soundSources.TryGetValue(key, out var source))
+            try
             {
-                var player = new MediaPlayer
+                // Mapeia as nossas "chaves" de som para os nomes dos ficheiros
+                var fileName = key switch
                 {
-                    Source = source,
-                    Volume = 1.0,
-                    AudioCategory = MediaPlayerAudioCategory.GameEffects
+                    "shoot" => "shoot.mp3",
+                    "invaderkilled" => "hit.mp3",
+                    "explosion" => "hit.mp3",
+                    "barrier" => "barrier.mp3",
+                    _ => null
                 };
 
-                _activePlayers.Add(player);
-
-                player.MediaEnded += (sender, args) =>
+                if (fileName == null)
                 {
-                    _dispatcherQueue.TryEnqueue(() => 
-                    {
-                        if (sender is MediaPlayer finishedPlayer)
-                        {
-                            _activePlayers.Remove(finishedPlayer);
-                        }
-                    });
+                    Debug.WriteLine($"[NAudio] Som com a chave '{key}' não encontrado.");
+                    return;
+                }
+
+                // Monta o caminho completo para o ficheiro de áudio na pasta de compilação
+                string fullPath = Path.Combine(AppContext.BaseDirectory, "Assets", "Sounds", fileName);
+
+                if (!File.Exists(fullPath))
+                {
+                    Debug.WriteLine($"[NAudio] ERRO: Ficheiro de som NÃO ENCONTRADO em: '{fullPath}'");
+                    return;
+                }
+                
+                // Cria os objetos da NAudio para ler e tocar o ficheiro de som
+                var audioFile = new AudioFileReader(fullPath);
+                var outputDevice = new WaveOutEvent();
+
+                // Adiciona os objetos à lista de players ativos para os proteger
+                _activeSoundPlayers.Add(audioFile);
+                _activeSoundPlayers.Add(outputDevice);
+
+                // Configura um evento que será acionado quando o som terminar de tocar
+                outputDevice.PlaybackStopped += (sender, args) =>
+                {
+                    // Remove os objetos da lista e liberta os recursos de forma segura
+                    _activeSoundPlayers.Remove(outputDevice);
+                    _activeSoundPlayers.Remove(audioFile);
+                    outputDevice.Dispose();
+                    audioFile.Dispose();
                 };
 
-                player.Play();
+                outputDevice.Init(audioFile);
+                outputDevice.Play();
             }
-            else
+            catch (Exception ex)
             {
-                Debug.WriteLine($"[SoundManager v4] AVISO: Fonte de som não encontrada no dicionário: '{key}'");
+                Debug.WriteLine($"[NAudio] Erro ao tocar o som '{key}': {ex.Message}");
             }
         }
     }
