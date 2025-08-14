@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\eriss\\RiderProjects\\spaceInvaders1\\spaceInvaders\\spaceInvaders.csproj": {}
+    "C:\\Users\\eriss\\RiderProjects\\space-invaders-hollow-edition\\spaceInvaders\\spaceInvaders.csproj": {}
   },
   "projects": {
-    "C:\\Users\\eriss\\RiderProjects\\spaceInvaders1\\spaceInvaders\\spaceInvaders.csproj": {
+    "C:\\Users\\eriss\\RiderProjects\\space-invaders-hollow-edition\\spaceInvaders\\spaceInvaders.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\eriss\\RiderProjects\\spaceInvaders1\\spaceInvaders\\spaceInvaders.csproj",
+        "projectUniqueName": "C:\\Users\\eriss\\RiderProjects\\space-invaders-hollow-edition\\spaceInvaders\\spaceInvaders.csproj",
         "projectName": "spaceInvaders",
-        "projectPath": "C:\\Users\\eriss\\RiderProjects\\spaceInvaders1\\spaceInvaders\\spaceInvaders.csproj",
+        "projectPath": "C:\\Users\\eriss\\RiderProjects\\space-invaders-hollow-edition\\spaceInvaders\\spaceInvaders.csproj",
         "packagesPath": "C:\\Users\\eriss\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\eriss\\RiderProjects\\spaceInvaders1\\spaceInvaders\\obj\\",
+        "outputPath": "C:\\Users\\eriss\\RiderProjects\\space-invaders-hollow-edition\\spaceInvaders\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "centralPackageVersionsManagementEnabled": true,

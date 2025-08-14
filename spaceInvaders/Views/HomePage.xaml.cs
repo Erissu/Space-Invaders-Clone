@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
-namespace spaceInvaders;
+
+namespace spaceInvaders.Views;
 
 public sealed partial class HomePage : Page
 {

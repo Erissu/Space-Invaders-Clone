@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NcrQdNhlBII=",
+  "dgSpecHash": "DBboPnX15ok=",
   "success": true,
-  "projectFilePath": "C:\\Users\\eriss\\RiderProjects\\spaceInvaders1\\spaceInvaders\\spaceInvaders.csproj",
+  "projectFilePath": "C:\\Users\\eriss\\RiderProjects\\space-invaders-hollow-edition\\spaceInvaders\\spaceInvaders.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\eriss\\.nuget\\packages\\commonservicelocator\\2.0.5\\commonservicelocator.2.0.5.nupkg.sha512",
     "C:\\Users\\eriss\\.nuget\\packages\\communitytoolkit.mvvm\\8.4.0\\communitytoolkit.mvvm.8.4.0.nupkg.sha512",

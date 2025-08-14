@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="spaceInvaders.MainPage"
+    x:Class="spaceInvaders.Views.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Background="#000000"
@@ -19,7 +19,7 @@
 
             <TextBlock x:Name="GameOverText"
                        Text="GAME OVER"
-                       Foreground="#ff0000"
+                       Foreground="#FF0000"
                        FontSize="72"
                        FontWeight="ExtraBold"
                        Visibility="Collapsed"
@@ -32,7 +32,6 @@
                     Click="MenuButton_Click"
                     Canvas.Left="350"
                     Canvas.Top="350"/>
-
         </Canvas>
 
         <Grid Grid.Row="0" Margin="10">

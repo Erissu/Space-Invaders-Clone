@@ -1,0 +1,17 @@
+﻿<Page
+    x:Class="spaceInvaders.Views.ControlsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="#000">
+
+    <StackPanel Spacing="15" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="CONTROLES" FontSize="36" Foreground="#ffff" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <TextBlock Text="Mover para Esquerda:  Seta Esquerda ou A" FontSize="20" Foreground="#ffff"/>
+        <TextBlock Text="Mover para Direita:  Seta Direita ou D" FontSize="20" Foreground="#ffff"/>
+        <TextBlock Text="Atirar:  Barra de Espaço" FontSize="20" Foreground="#ffff"/>
+        <TextBlock Text="Reiniciar (Game Over):  Enter" FontSize="20" Foreground="#ffff"/>
+
+        <Button x:Name="BackButton" Content="Voltar" Click="BackButton_Click" Margin="0,50,0,0"/>
+    </StackPanel>
+</Page>

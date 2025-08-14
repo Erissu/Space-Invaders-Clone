@@ -42,12 +42,35 @@
     </ItemGroup>
     <ItemGroup>
       <None Remove="Sounds\invaderkilled.wav" />
-      <Content Include="Sounds\invaderkilled.wav">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
       <None Remove="Sounds\shoot.wav" />
-      <Content Include="Sounds\shoot.wav">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Views\HomePage.xaml.cs">
+        <DependentUpon>HomePage.xaml</DependentUpon>
+        <IsDefaultItem>true</IsDefaultItem>
+      </Compile>
+      <Compile Update="Views\HighScoresPage.xaml.cs">
+        <DependentUpon>HighScoresPage.xaml</DependentUpon>
+        <IsDefaultItem>true</IsDefaultItem>
+      </Compile>
+      <Compile Update="Views\MainPage.xaml.cs">
+        <DependentUpon>MainPage.xaml</DependentUpon>
+        <IsDefaultItem>true</IsDefaultItem>
+      </Compile>
+      <Compile Update="Views\ControlsPage.xaml.cs">
+        <DependentUpon>ControlsPage.xaml</DependentUpon>
+        <IsDefaultItem>true</IsDefaultItem>
+      </Compile>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Assets\Sprites\" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Update="Assets\Sounds\shoot.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="Assets\Sounds\invaderkilled.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
 

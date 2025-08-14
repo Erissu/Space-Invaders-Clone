@@ -12,6 +12,8 @@ public class Alien : GameObject
     {
         ScoreValue = scoreValue;
         
+        // o alien cria o proprio visual, as arvores somos nozes 
+        
         var rect = new Rectangle
         {
             Width = this.Width,

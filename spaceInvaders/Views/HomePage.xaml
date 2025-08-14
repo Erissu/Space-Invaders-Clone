@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="spaceInvaders.HomePage"
+    x:Class="spaceInvaders.Views.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Background="#000000">
@@ -11,7 +11,7 @@
         <TextBlock Text="SPACE INVADERS"
                    FontSize="48"
                    FontWeight="Bold"
-                   Foreground="#FFFFFF"
+                   Foreground="#ffff"
                    HorizontalAlignment="Center"
                    Margin="0,0,0,50"/>
 

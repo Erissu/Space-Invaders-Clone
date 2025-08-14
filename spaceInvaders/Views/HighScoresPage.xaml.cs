@@ -1,12 +1,11 @@
-﻿// spaceInvaders/ControlsPage.xaml.cs
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace spaceInvaders;
+namespace spaceInvaders.Views;
 
-public sealed partial class ControlsPage : Page
+public sealed partial class HighScoresPage : Page
 {
-    public ControlsPage()
+    public HighScoresPage()
     {
         this.InitializeComponent();
     }
