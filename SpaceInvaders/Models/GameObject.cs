@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-
+﻿
 namespace SpaceInvaders.Models
 {
     /// <summary>
@@ -23,8 +21,7 @@ namespace SpaceInvaders.Models
             get => Canvas.GetTop(Visual);
             set => Canvas.SetTop(Visual, value);
         }
-
-        // CORRIGIDO: O construtor agora aceita o elemento visual e suas dimensões.
+        
         protected GameObject(FrameworkElement visual, double width, double height)
         {
             Visual = visual;

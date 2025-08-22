@@ -4,53 +4,55 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:SpaceInvaders.ViewModels"
+    xmlns:converters="using:SpaceInvaders.Converters"
     mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance viewModels:GameViewModel, IsDesignTimeCreatable=True}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Page.Resources>
+
     <Grid>
-        <StackPanel x:Name="StartScreen" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="20">
+        <StackPanel x:Name="StartScreen" Visibility="{Binding IsStartScreenVisible, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="15">
             <TextBlock Text="SPACE INVADERS" FontSize="48" FontWeight="Bold" HorizontalAlignment="Center"/>
-            <TextBlock Text="= TABELA DE PONTOS =" FontSize="20" HorizontalAlignment="Center" Foreground="LawnGreen" Margin="0,20,0,0"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
-                <Image Source="ms-appx:///Assets/Images/alien4.png" Width="30" Height="30"/>
-                <TextBlock Text="= ??? PONTOS" VerticalAlignment="Center" FontSize="16"/>
+            <StackPanel BorderBrush="#7CFC00" BorderThickness="1" Padding="15" Margin="0,10">
+                <TextBlock Text="= TABELA DE PONTOS =" FontSize="20" HorizontalAlignment="Center" Foreground="#7CFC00" Margin="0,0,0,10"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10"><Image Source="ms-appx:///Assets/Images/alien4.png" Width="30" Height="30"/><TextBlock Text="= ??? PONTOS" VerticalAlignment="Center" FontSize="16"/></StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10"><Image Source="ms-appx:///Assets/Images/alien3.png" Width="30" Height="30"/><TextBlock Text="= 40 PONTOS" VerticalAlignment="Center" FontSize="16"/></StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10"><Image Source="ms-appx:///Assets/Images/alien2.png" Width="30" Height="30"/><TextBlock Text="= 20 PONTOS" VerticalAlignment="Center" FontSize="16"/></StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10"><Image Source="ms-appx:///Assets/Images/alien1.png" Width="30" Height="30"/><TextBlock Text="= 10 PONTOS" VerticalAlignment="Center" FontSize="16"/></StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
-                <Image Source="ms-appx:///Assets/Images/alien3.png" Width="30" Height="30"/>
-                <TextBlock Text="= 40 PONTOS" VerticalAlignment="Center" FontSize="16"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
-                <Image Source="ms-appx:///Assets/Images/alien2.png" Width="30" Height="30"/>
-                <TextBlock Text="= 20 PONTOS" VerticalAlignment="Center" FontSize="16"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
-                <Image Source="ms-appx:///Assets/Images/alien1.png" Width="30" Height="30"/>
-                <TextBlock Text="= 10 PONTOS" VerticalAlignment="Center" FontSize="16"/>
-            </StackPanel>
-            <Button Content="Iniciar Jogo" HorizontalAlignment="Center" Click="StartGame_Click" FontSize="24" Padding="20,10" Margin="0,20,0,0"/>
-            <TextBlock Text="Use as setas (← →) ou A/D para mover e Espaço para atirar." FontSize="14" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+            <Button Content="Iniciar Novo Jogo" HorizontalAlignment="Center" FontSize="24" Padding="20,10" Click="StartGame_Click"/>
+            <Button Content="Tabela de Placares" HorizontalAlignment="Center" FontSize="24" Padding="20,10" Command="{Binding ShowHighScoresCommand}"/>
+            <TextBlock Text="Controles" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+            <TextBlock Text="Use as setas (← →) ou A/D para mover, Espaço para atirar e 'ESC' para pausar." FontSize="14" HorizontalAlignment="Center"/>
         </StackPanel>
 
-        <Grid x:Name="InGameUI" Visibility="Collapsed" IsTabStop="True">
-
-            <Canvas x:Name="GameCanvas" Width="800" Height="600" Background="Black" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid x:Name="InGameUI" Visibility="{Binding IsGameScreenVisible, Converter={StaticResource BooleanToVisibilityConverter}}" IsTabStop="True">
+            <Canvas x:Name="GameCanvas" Width="800" Height="600" Background="#000000" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Image x:Name="PlayerImage" Width="50" Height="40" Canvas.Left="375" Canvas.Top="550" Source="ms-appx:///Assets/Images/lasercannon.png"/>
             </Canvas>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,10,0,0"><TextBlock Text="PONTUAÇÃO: " Foreground="#FFFFFF" FontSize="20"/><TextBlock Text="{Binding Score}" Foreground="#7CFC00" FontSize="20"/></StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,20,0"><TextBlock Text="VIDAS: " Foreground="#FFFFFF" VerticalAlignment="Center" FontSize="20"/><Image x:Name="Life1" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="{Binding IsLife1Visible, Converter={StaticResource BooleanToVisibilityConverter}}"/><Image x:Name="Life2" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="{Binding IsLife2Visible, Converter={StaticResource BooleanToVisibilityConverter}}"/><Image x:Name="Life3" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="{Binding IsLife3Visible, Converter={StaticResource BooleanToVisibilityConverter}}"/></StackPanel>
 
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,10,0,0">
-                <TextBlock Text="PONTUAÇÃO: " Foreground="White" FontSize="20"/>
-                <TextBlock x:Name="ScoreText" Text="0" Foreground="LawnGreen" FontSize="20"/>
-            </StackPanel>
+            </Grid>
 
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,20,0">
-                <TextBlock Text="VIDAS: " Foreground="White" VerticalAlignment="Center" FontSize="20"/>
-                <Image x:Name="Life1" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0"/>
-                <Image x:Name="Life2" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0"/>
-                <Image x:Name="Life3" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0"/>
-                <Image x:Name="Life4" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="Collapsed"/>
-                <Image x:Name="Life5" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="Collapsed"/>
-                <Image x:Name="Life6" Source="ms-appx:///Assets/Images/lasercannon.png" Width="30" Height="24" Margin="5,0" Visibility="Collapsed"/>
+        <Grid x:Name="GameOverScreen" Visibility="{Binding IsGameOverScreenVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#CC000000">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="20"><TextBlock Text="{Binding GameOverTitle}" FontSize="48" FontWeight="Bold" HorizontalAlignment="Center"/><StackPanel Orientation="Horizontal" HorizontalAlignment="Center"><TextBlock Text="Pontuação Final: " FontSize="24"/><TextBlock Text="{Binding FinalScore}" FontSize="24" Foreground="#7CFC00"/></StackPanel><StackPanel Spacing="10" Visibility="{Binding IsSavingScoreVisible, Converter={StaticResource BooleanToVisibilityConverter}}"><TextBlock Text="Insira o seu nome:" FontSize="18" HorizontalAlignment="Center"/><TextBox Text="{Binding PlayerName, Mode=TwoWay}" MaxLength="10" HorizontalAlignment="Center" Width="200"/><Button Content="Salvar Pontuação" Command="{Binding SaveScoreCommand}" HorizontalAlignment="Center" Padding="10,5"/></StackPanel><StackPanel Spacing="15" Visibility="{Binding IsPostSaveOptionsVisible, Converter={StaticResource BooleanToVisibilityConverter}}"><Button Content="Jogar Novamente" FontSize="24" Padding="20,10" HorizontalAlignment="Center" Click="StartGame_Click"/><Button Content="Voltar ao Menu" FontSize="24" Padding="20,10" HorizontalAlignment="Center" Command="{Binding ReturnToMenuCommand}"/></StackPanel></StackPanel>
+        </Grid>
+
+        <Grid x:Name="PauseScreen" Visibility="{Binding IsPauseScreenVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#CC000000">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="20">
+                <TextBlock Text="JOGO PAUSADO" FontSize="48" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <Button Content="Continuar Jogo" FontSize="24" Padding="20,10" HorizontalAlignment="Center" Command="{Binding ResumeGameCommand}"/>
+                <Button Content="Voltar ao Menu Principal" FontSize="24" Padding="20,10" HorizontalAlignment="Center" Command="{Binding ReturnToMenuCommand}"/>
             </StackPanel>
+        </Grid>
+
+        <Grid x:Name="HighScoreScreen" Visibility="{Binding IsHighScoreScreenVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#CC000000">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="20" Width="400"><TextBlock Text="Melhores Pontuações" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center"/><ListView ItemsSource="{Binding HighScores}" HorizontalContentAlignment="Stretch"><ListView.ItemTemplate><DataTemplate><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{Binding PlayerName}" FontSize="22" HorizontalAlignment="Left"/><TextBlock Text="{Binding Score}" FontSize="22" Foreground="#7CFC00" Grid.Column="1" HorizontalAlignment="Right"/></Grid></DataTemplate></ListView.ItemTemplate></ListView><Button Content="Voltar ao Menu" FontSize="24" Padding="20,10" HorizontalAlignment="Center" Command="{Binding ReturnToMenuCommand}"/></StackPanel>
         </Grid>
     </Grid>
 </Page>

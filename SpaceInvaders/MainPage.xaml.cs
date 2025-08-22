@@ -1,53 +1,56 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using SpaceInvaders.Services;
+using SpaceInvaders.ViewModels;
 using Windows.System;
 
 namespace SpaceInvaders
 {
     public sealed partial class MainPage : Page
     {
-        private GameManager? _gameManager;
+        public GameViewModel ViewModel { get; }
 
         public MainPage()
         {
             this.InitializeComponent();
+            ViewModel = new GameViewModel();
+            this.DataContext = ViewModel;
         }
 
         private void StartGame_Click(object sender, RoutedEventArgs e)
         {
-            // Esconde o menu e mostra a tela do jogo
-            StartScreen.Visibility = Visibility.Collapsed;
-            InGameUI.Visibility = Visibility.Visible;
-            
-            // Se o jogo nunca foi criado, cria uma nova instância
-            if (_gameManager == null)
+            var gameElements = new object[] { GameCanvas, PlayerImage };
+            if (ViewModel.StartGameCommand.CanExecute(gameElements))
             {
-                _gameManager = new GameManager(GameCanvas, ScoreText, Life1, Life2, Life3, Life4, Life5, Life6, PlayerImage);
-                
-                // Anexa os eventos de teclado APENAS UMA VEZ
-                InGameUI.KeyDown += GameUI_KeyDown;
-                InGameUI.KeyUp += GameUI_KeyUp;
+                ViewModel.StartGameCommand.Execute(gameElements);
             }
-            
-            // Inicia o jogo (ou reinicia, se já existia)
-            _gameManager.StartGame();
-            
-            // Garante que a tela do jogo possa receber os comandos do teclado
+            InGameUI.KeyDown -= GameUI_KeyDown; 
+            InGameUI.KeyUp -= GameUI_KeyUp;
+            InGameUI.KeyDown += GameUI_KeyDown;
+            InGameUI.KeyUp += GameUI_KeyUp;
             InGameUI.Focus(FocusState.Programmatic);
         }
-
-        // Envia o comando de tecla pressionada para o GameManager
+        
         private void GameUI_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            _gameManager?.OnKeyDown(e.Key);
+            // CORRIGIDO: Agora verifica a tecla Escape (ESC) em vez de 'P'.
+            if (e.Key == VirtualKey.Escape)
+            {
+                if (ViewModel.IsPauseScreenVisible)
+                {
+                    ViewModel.ResumeGameCommand.Execute(null);
+                }
+                else
+                {
+                    ViewModel.PauseGameCommand.Execute(null);
+                }
+            }
+            else
+            {
+                ViewModel.KeyDownCommand.Execute(e.Key);
+            }
         }
 
-        // Envia o comando de tecla solta para o GameManager
-        private void GameUI_KeyUp(object sender, KeyRoutedEventArgs e)
-        {
-            _gameManager?.OnKeyUp(e.Key);
-        }
+        private void GameUI_KeyUp(object sender, KeyRoutedEventArgs e) => ViewModel.KeyUpCommand.Execute(e.Key);
     }
 }

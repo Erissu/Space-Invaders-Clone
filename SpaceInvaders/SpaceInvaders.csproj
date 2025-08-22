@@ -39,6 +39,6 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="NAudio" />
+        <PackageReference Include="NAudio" />
     </ItemGroup>
 </Project>

@@ -10,9 +10,9 @@ namespace SpaceInvaders.Models
         private readonly double _initialX;
         private readonly double _initialY;
 
-        // O construtor agora chama o construtor base corrigido.
         public Enemy(EnemyType type, double initialX, double initialY) 
-            : base(new Image { Source = new BitmapImage(new Uri(type.ImageSource)) }, 40, 30)
+            // CORRIGIDO: Aumentei o tamanho de 40x30 para 50x38
+            : base(new Image { Source = new BitmapImage(new Uri(type.ImageSource)) }, 50, 38)
         {
             Points = type.Points;
             _initialX = initialX;
