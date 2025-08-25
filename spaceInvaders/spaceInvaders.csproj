@@ -1,0 +1,77 @@
+<Project Sdk="Uno.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>net9.0-desktop</TargetFrameworks>
+
+        <OutputType>Exe</OutputType>
+        <UnoSingleProject>true</UnoSingleProject>
+
+        <!-- Display name -->
+        <ApplicationTitle>spaceInvaders</ApplicationTitle>
+        <!-- App Identifier -->
+        <ApplicationId>com.companyname.spaceInvaders</ApplicationId>
+        <!-- Versions -->
+        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+        <ApplicationVersion>1</ApplicationVersion>
+        <!-- Package Publisher -->
+        <ApplicationPublisher>O=spaceInvaders</ApplicationPublisher>
+        <!-- Package Description -->
+        <Description>spaceInvaders powered by Uno Platform.</Description>
+
+        <!--
+          UnoFeatures let's you quickly add and manage implicit package references based on the features you want to use.
+          https://aka.platform.uno/singleproject-features
+        -->
+        <UnoFeatures>
+            Material;
+            Dsp;
+            Hosting;
+            Toolkit;
+            Logging;
+            Mvvm;
+            Configuration;
+            HttpKiota;
+            Serialization;
+            Localization;
+            Navigation;
+            ThemeService;
+            SkiaRenderer;
+        </UnoFeatures>
+    </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="NAudio" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="Sounds\invaderkilled.wav" />
+      <None Remove="Sounds\shoot.wav" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Views\HomePage.xaml.cs">
+        <DependentUpon>HomePage.xaml</DependentUpon>
+        <IsDefaultItem>true</IsDefaultItem>
+      </Compile>
+      <Compile Update="Views\HighScoresPage.xaml.cs">
+        <DependentUpon>HighScoresPage.xaml</DependentUpon>
+        <IsDefaultItem>true</IsDefaultItem>
+      </Compile>
+      <Compile Update="Views\MainPage.xaml.cs">
+        <DependentUpon>MainPage.xaml</DependentUpon>
+        <IsDefaultItem>true</IsDefaultItem>
+      </Compile>
+      <Compile Update="Views\ControlsPage.xaml.cs">
+        <DependentUpon>ControlsPage.xaml</DependentUpon>
+        <IsDefaultItem>true</IsDefaultItem>
+      </Compile>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Assets\Sprites\" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Update="Assets\Sounds\shoot.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="Assets\Sounds\invaderkilled.wav">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+</Project>

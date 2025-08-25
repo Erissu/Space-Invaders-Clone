@@ -7,6 +7,9 @@
   -->
   <ItemGroup>
     <PackageVersion Include="NAudio" Version="2.2.1" />
+<<<<<<< HEAD
     <PackageVersion Include="Uno.WinUI" Version="6.1.34" />
+=======
+>>>>>>> b27a6b1009bfefc1880b79e5d0db58b6bfdaaba0
   </ItemGroup>
 </Project>

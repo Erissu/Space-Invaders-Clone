@@ -13,6 +13,7 @@
       "request": "launch",
       "preLaunchTask": "build-desktop",
       // If you have changed target frameworks, make sure to update the program path.
+<<<<<<< HEAD
       "program": "${workspaceFolder}/SpaceInvaders/bin/Debug/net9.0-desktop/SpaceInvaders.dll",
       "args": [],
       "launchSettingsProfile": "SpaceInvaders (Desktop)",
@@ -20,6 +21,15 @@
         "DOTNET_MODIFIABLE_ASSEMBLIES": "debug"
       },
       "cwd": "${workspaceFolder}/SpaceInvaders",
+=======
+      "program": "${workspaceFolder}/spaceInvaders/bin/Debug/net9.0-desktop/spaceInvaders.dll",
+      "args": [],
+      "launchSettingsProfile": "spaceInvaders (Desktop)",
+      "env": {
+        "DOTNET_MODIFIABLE_ASSEMBLIES": "debug"
+      },
+      "cwd": "${workspaceFolder}/spaceInvaders",
+>>>>>>> b27a6b1009bfefc1880b79e5d0db58b6bfdaaba0
       // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
       "console": "internalConsole",
       "stopAtEntry": false

@@ -7,7 +7,11 @@
       "type": "process",
       "args": [
         "build",
+<<<<<<< HEAD
         "${workspaceFolder}/SpaceInvaders/SpaceInvaders.csproj",
+=======
+        "${workspaceFolder}/spaceInvaders/spaceInvaders.csproj",
+>>>>>>> b27a6b1009bfefc1880b79e5d0db58b6bfdaaba0
         "/property:GenerateFullPaths=true",
         "/property:TargetFramework=net9.0-desktop",
         "/consoleloggerparameters:NoSummary"
@@ -20,7 +24,11 @@
       "type": "process",
       "args": [
         "publish",
+<<<<<<< HEAD
         "${workspaceFolder}/SpaceInvaders/SpaceInvaders.csproj",
+=======
+        "${workspaceFolder}/spaceInvaders/spaceInvaders.csproj",
+>>>>>>> b27a6b1009bfefc1880b79e5d0db58b6bfdaaba0
         "/property:GenerateFullPaths=true",
         "/property:TargetFramework=net9.0-desktop",
         "/consoleloggerparameters:NoSummary"
