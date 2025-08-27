@@ -53,7 +53,7 @@ O código-fonte está organizado nas seguintes pastas para manter uma estrutura 
 
 1.  **Clone o repositório:**
     ```bash
-    git clone https://gitlab.com/David_Alexss/spaceinvaders
+    git clone [https://github.com/Erissu/Space-Invaders-Clone]
     ```
 2.  **Abra o projeto:**
     * Abra o arquivo da solução (`.sln`) com o JetBrains Rider ou Visual Studio.
