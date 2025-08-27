@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 # Space Invaders
 
 Este projeto do clássico jogo de arcade Space Invaders, desenvolvido em C\# utilizando a plataforma Uno Platform com Skia para renderização em desktop. O objetivo é recriar a jogabilidade nostálgica do original, adicionando funcionalidades modernas e uma estrutura de código organizada.
@@ -62,9 +60,6 @@ O código-fonte está organizado nas seguintes pastas para manter uma estrutura 
 4.  **Compile e Execute:**
     * Certifique-se de que o projeto `SpaceInvaders.Skia.WinUI` esteja definido como projeto de inicialização.
     * Execute o projeto em modo de **Debug** (F5) ou **Release** (Ctrl+F5).
-=======
-# Space Invaders Hollow Edition
 
 
 
-## Getting started
